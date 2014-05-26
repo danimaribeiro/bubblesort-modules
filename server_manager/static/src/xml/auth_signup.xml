@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+    
+    <t t-extend="Login">
+        <t t-jquery="form ul:first li:has(input[name=confirm_password])" t-operation="after">
+            <li data-modes="signup reset">Chave de licença</li>
+            <li data-modes="signup reset"><input name="licence_key" /></li>
+            <li data-modes="signup reset">Nome da empresa (unico)</li>
+            <li data-modes="signup reset"><input name="company_name" /></li>
+        </t>
+    </t>
+    
+</templates>

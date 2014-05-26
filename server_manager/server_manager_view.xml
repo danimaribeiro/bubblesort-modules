@@ -1,0 +1,175 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data>
+
+		<menuitem name="Ferramentas/Gerenciamento servidores" id="tools_base_menu"/>
+		<record model="ir.ui.view" id="view_server_manager_form">
+			<field name="name">Configure subdominios</field>
+			<field name="model">server.subdomain</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Configurar o servidor" version="7.0">
+					<header>
+						<button name="create_subdomain" colspan="2" string="Gerar subdominio" type="object" icon="terp-personal+"/>
+						<button name="duplicate_database" colspan="2" string="Gerar banco de dados" type="object" icon="gtk-copy"/>
+					</header>
+					<group>
+						<field name="subdomain"/>
+						<field name="base_database_id" />
+						<field name="default_server_id" />
+						<field name="partner_id" />
+					</group>
+				</form>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="view_server_manager_tree">
+			<field name="name">Subdominios</field>
+			<field name="model">server.subdomain</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Subdominios">
+					<field name="subdomain"/>
+					<field name="base_database_id" />
+					<field name="default_server_id" />
+					<field name="partner_id" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_server_manager_form">
+			<field name="name">Gerenciar Subdominios</field>
+			<field name="res_model">server.subdomain</field>
+			<field name="view_type">form</field>
+			<field name='view_mode'>tree,form</field>
+			<field name='view_id' ref='view_server_manager_tree'/>
+		</record>
+		<menuitem parent="tools_base_menu" action="action_server_manager_form" id="server_manager_menu"/>
+		<record model="ir.actions.act_window" id="action_server_location_form">
+			<field name="name">Servidores</field>
+			<field name="res_model">server.location</field>
+			<field name="view_type">form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+		<menuitem parent="tools_base_menu" action="action_server_location_form" id="server_location_menu"/>
+		<record model="ir.actions.act_window" id="action_database_template_form">
+			<field name="name">Templates Banco de dados</field>
+			<field name="res_model">database.template</field>
+			<field name="view_type">form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+		<menuitem parent="tools_base_menu" action="action_database_template_form" id="database_template_menu"/>
+		
+		<record model="ir.ui.view" id="server_config_view">
+			<field name="name">Configuracoes servidor</field>
+			<field name="model">server.config.settings</field>
+			<field name="arch" type="xml">
+				<form string="Configuration" version="7.0" position="replace">
+					<form string="Configure servidor" class="oe_form_configuration" version="7.0">
+						<header>
+							<button string="Apply" type="object" name="execute" class="oe_highlight"/>
+							or
+							<button string="Cancel" type="object" name="cancel" class="oe_link"/>
+						</header>
+						<separator string="Configurações gerenciamento servidor"/>
+						<group colspan="4">
+							<field name="zerigo_email_api"/>
+							<field name="zerigo_dns_key"/>
+							<field name="default_database_template_id"/>
+							<field name="default_server_id"/>
+							<field name="default_email_template"/>							
+						</group>
+					</form>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_server_config_form">
+			<field name="name">Configurações</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">server.config.settings</field>
+			<field name="view_id" ref="server_config_view"></field>
+			<field name="view_mode">form</field>
+			<field name="target">inline</field>
+		</record>
+		<menuitem parent="tools_base_menu" action="action_server_config_form" id="server_config_menu" groups="base.group_system"/>
+
+	</data>
+	
+	    <!-- Mail template are declared in a NOUPDATE block
+         so users can freely customize/delete them -->
+    <data noupdate="1">
+	        <!--Email template -->
+        <record id="email_template_user_signup" model="email.template">
+            <field name="name">Modelo email signup</field>
+            <field name="email_from">${object.company_id.name} &lt;${object.company_id.email}&gt;</field>
+            <field name="subject">Acesso ao sistema - ${object.company_id.name}</field>
+            <field name="email_to">${object.email}</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="auto_delete" eval="True"/>            
+            <field name="report_name">User_${(object.name or '')</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); ">
+
+    <p>Olá ${object.name},</p>
+    
+    <p>Você está recebendo este e-mail de ${object.company_id.name} pois acabou de adquirir uma licença de nosso sistema. </p>
+    <p>Temos um grande prazer de te-lo como cliente, seu ambiente já foi configurado e está esperando por vocẽ, acompanhe abaixo as informações</p>
+
+    <p style="border-left: 1px solid #8e0000; margin-left: 30px;">
+       &nbsp;&nbsp;<strong>REFERÊNCIAS</strong><br />
+       &nbsp;&nbsp;Cliente: <strong>${object.name}</strong><br />
+       &nbsp;&nbsp;E-mail (login): ${object.login}<br />
+       &nbsp;&nbsp;Senha de acesso: ${object.password}<br />         
+    </p>
+
+    <% set signup_url = object.get_signup_url() %>
+    % if signup_url:
+    <p>
+    Você já pode acessar seu ambiente e começar a usar através do link abaixo:
+    </p>
+        <a style="display:block; width: 150px; height:20px; margin-left: 120px; color: #DDD; font-family: 'Lucida Grande', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; text-align: center; text-decoration: none !important; line-height: 1; padding: 5px 0px 0px 0px; background-color: #8E0000; border-radius: 5px 5px; background-repeat: repeat no-repeat;"
+           href="${signup_url}">Acessar sistema</a>
+    % endif
+
+    <br/>
+    <p>Se você tiver alguma dúvida, entre em contato conosco.</p>
+    <p>Obrigado por escolher ${object.company_id.name or 'us'}!</p>
+    <br/>
+    <br/>
+    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+    </div>
+    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+        <span style="color: #222; margin-bottom: 5px; display: block; ">
+        % if object.company_id.street:
+            ${object.company_id.street}<br/>
+        % endif
+        % if object.company_id.street2:
+            ${object.company_id.street2}<br/>
+        % endif
+        % if object.company_id.city or object.company_id.zip:
+            ${object.company_id.zip} ${object.company_id.city}<br/>
+        % endif
+        % if object.company_id.country_id:
+            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br/>
+        % endif
+        </span>
+        % if object.company_id.phone:
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                Fone:&nbsp; ${object.company_id.phone}
+            </div>
+        % endif
+        % if object.company_id.website:
+            <div>
+                Site :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+            </div>
+        % endif
+        <p></p>
+    </div>
+</div>
+            ]]></field>
+        </record>
+    </data>
+</openerp>
+

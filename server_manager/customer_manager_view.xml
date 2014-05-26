@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_licence_software_form">
+            <field name="name">Configurar licença</field>
+            <field name="model">licence.software</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Configurar a licença" version="7.0">
+                    <header>
+                        <field name="state" widget="statusbar" />                         
+                    </header>
+                    <group>
+                        <field name="licence_key" />                    
+                        <field name="partner_id" />
+                        <field name="max_users" />
+                        <field name="issued_date" />  
+                        <field name="expiry_date" />                      
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_licence_software_tree">
+            <field name="name">Licenças do OpenERP</field>
+            <field name="model">licence.software</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Controle das licenças">
+                    <field name="licence_key" />
+                    <field name="state" />                    
+                    <field name="partner_id" />
+                    <field name="max_users" />                    
+                    <field name="issued_date" />
+                    <field name="expiry_date" />                    
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_licence_software_form">
+            <field name="name">Gerenciar licenças</field>
+            <field name="res_model">licence.software</field>
+            <field name="view_type">form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name='view_id' ref='view_licence_software_tree'/>
+        </record>
+        <menuitem parent="tools_base_menu" action="action_licence_software_form" id="licence_software_menu"/>
+
+    </data>
+</openerp>

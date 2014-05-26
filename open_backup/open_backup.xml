@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>    	
+    	
+        <record id="ir_cron_backupscheduler0" model="ir.cron">
+            <field eval="&quot;&quot;&quot;schedule_backup&quot;&quot;&quot;" name="function"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field eval="&quot;&quot;&quot;Backup scheduler&quot;&quot;&quot;" name="name"/>
+            <field eval="-1" name="numbercall"/>
+            <field eval="5" name="priority"/>
+            <field eval="0" name="doall"/>
+            <field eval="1" name="active"/>
+            <field eval="&quot;&quot;&quot;opendb.backup&quot;&quot;&quot;" name="model"/>
+        </record>
+        
+        <record model="ir.ui.view" id="view_backup_conf_form">
+            <field name="name">Configure Backup</field>
+            <field name="model">opendb.backup</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Test">
+                    <group col="8" colspan="8">
+                        <separator col="4" string="Configuração IP"/>
+                        <separator col="4" string="Destino"/>
+                    </group>
+                    <group col="2" colspan="2">
+                        <field name="host" />
+                        <field name="name" />
+                        <field name="port" />
+                        <field name="use_ftp" />                       
+                    </group>
+                    <group attrs="{'invisible': [('use_ftp','=', True)]}">
+                        <field name="backup_dir" />
+                    </group>                 
+                    <group attrs="{'invisible': [('use_ftp','=', False)]}">
+                        <field name="ftp_address" />
+                        <field name="ftp_port" />
+                        <field name="ftp_username"/>
+                        <field name="ftp_password"/>
+                    </group>
+                    <newline/>                    
+                    <separator string="Ajuda" colspan="2" />
+                    <newline/>
+                  
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_backup_conf_tree">
+            <field name="name">Configure Backup</field>
+            <field name="model">opendb.backup</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Test">
+                    <field name='host'/>
+                    <field name='port'/>
+                    <field name='name'/>
+                    <field name='backup_dir'/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_backup_conf_form">
+            <field name="name">Configure Backup</field>
+            <field name="res_model">opendb.backup</field>
+            <field name="view_type">form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name='view_id' ref='view_backup_conf_tree'/>
+        </record>
+        <menuitem parent="server_manager.tools_base_menu" action="action_backup_conf_form" id="backup_conf_menu"/>
+
+    </data>
+</openerp>

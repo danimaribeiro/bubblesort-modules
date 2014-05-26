@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+licence_software,licence.software,model_licence_software,base.group_system,1,1,1,1
+server_location,server.location,model_server_location,base.group_system,1,1,1,1
+database_template,database.template,model_database_template,base.group_system,1,1,1,1
+server_subdomain,server.subdomain,model_server_subdomain,base.group_system,1,1,1,1
+server_config_settings,server.config.settings,model_server_config_settings,base.group_system,1,1,1,1

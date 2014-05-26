@@ -1,1 +1,1 @@
-from bubblesort_sass import *
+from disable_res_config import *
