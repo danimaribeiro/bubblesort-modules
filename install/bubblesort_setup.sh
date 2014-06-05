@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo "Iniciando a atualização da lista de pacotes"
-apt-get update
+#apt-get update
 
 echo "Iniciando a atualização"
-apt-get upgrade --yes
+#apt-get upgrade --yes
 
 echo "Instalando python"
 apt-get install python
@@ -23,19 +23,20 @@ pip install unittest2
 pip install psutil
 pip install jinja2
 pip install docutils
+pip install requests
 
 echo "Instalando PySped, aqui pode dar erro facilmente"
 apt-get install libxmlsec1-dev --yes
 apt-get install libxml2-dev --yes
 
 if [ $(uname -m) == 'x86_64' ]; then
-	pip install https://github.com/aricaldeira/pyxmlsec/archive/master.zip
+	#pip install https://github.com/aricaldeira/pyxmlsec/archive/master.zip
 	echo "skipping"
 else
 	pip install pyxmlsec
 fi
 
-pip install https://github.com/aricaldeira/geraldo/archive/master.zip
+#pip install https://github.com/aricaldeira/geraldo/archive/master.zip
 pip install pysped
 
 echo "Instalando git"
@@ -100,7 +101,7 @@ then
 	cd ..
 else
 	echo "Clonando dados contas"
-	bzr checkout --lightweight lp:account-payment/7.0 contas
+	#bzr checkout --lightweight lp:account-payment/7.0 contas
 fi
 
 if [ -d regras ]
@@ -111,7 +112,7 @@ then
 	cd ..
 else
 	echo "Clonando dados regras"
-	bzr checkout --lightweight lp:openerp-fiscal-rules regras
+	#bzr checkout --lightweight lp:openerp-fiscal-rules regras
 fi
 
 echo "Instalando banco de dados"
@@ -163,6 +164,7 @@ service nginx restart
 echo "Copiando arquivo openerp-config e iniciando o servidor para ver se tudo deu certo :)"
 
 cp openerp-config odoo/openerp-config
+chown $SUDO_USER:$SUDO_USER odoo/openerp-config
 cd odoo
 
 sudo -u $SUDO_USER bash << EOF
