@@ -112,7 +112,7 @@ then
 	cd ..
 else
 	echo "Clonando dados regras"
-	#bzr checkout --lightweight lp:openerp-fiscal-rules regras
+	bzr checkout --lightweight lp:openerp-fiscal-rules regras
 fi
 
 echo "Instalando banco de dados"
