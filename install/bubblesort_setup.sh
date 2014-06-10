@@ -6,6 +6,10 @@ apt-get update
 echo "Iniciando a atualização"
 apt-get upgrade --yes
 
+apt-get install language-pack-pt --yes
+locale-gen pt_BR.UTF-8
+update-locale LANG=pt_BR.UTF-8
+
 echo "Instalando python"
 apt-get install python
 
@@ -33,11 +37,11 @@ if [ $(uname -m) == 'x86_64' ]; then
 	pip install https://github.com/aricaldeira/pyxmlsec/archive/master.zip
 	echo "skipping"
 else
-	pip install pyxmlsec
+	pip install pyxmlsec 
 fi
 
 pip install https://github.com/aricaldeira/geraldo/archive/master.zip
-pip install pysped
+pip install pysped --allow-external PyXMLSec --allow-unverified PyXMLSec
 
 echo "Instalando git"
 apt-get install git --yes
