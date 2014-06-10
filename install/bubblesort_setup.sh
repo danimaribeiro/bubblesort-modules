@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo "Iniciando a atualização da lista de pacotes"
-#apt-get update
+apt-get update
 
 echo "Iniciando a atualização"
-#apt-get upgrade --yes
+apt-get upgrade --yes
 
 echo "Instalando python"
 apt-get install python
@@ -30,13 +30,13 @@ apt-get install libxmlsec1-dev --yes
 apt-get install libxml2-dev --yes
 
 if [ $(uname -m) == 'x86_64' ]; then
-	#pip install https://github.com/aricaldeira/pyxmlsec/archive/master.zip
+	pip install https://github.com/aricaldeira/pyxmlsec/archive/master.zip
 	echo "skipping"
 else
 	pip install pyxmlsec
 fi
 
-#pip install https://github.com/aricaldeira/geraldo/archive/master.zip
+pip install https://github.com/aricaldeira/geraldo/archive/master.zip
 pip install pysped
 
 echo "Instalando git"
@@ -76,9 +76,9 @@ then
 	cd ..
 else
 	echo "Clonando dados localizacao"
-	git clone https://github.com/openerpbrasil/l10n_br_core.git localizacao
+	git clone https://github.com/openerpbrasil-fiscal/l10n_br_core.git localizacao
 	cd localizacao
-	git checkout develop
+	git checkout 8.0
 	cd ..
 fi
 
@@ -101,7 +101,7 @@ then
 	cd ..
 else
 	echo "Clonando dados contas"
-	#bzr checkout --lightweight lp:account-payment/7.0 contas
+	bzr checkout --lightweight lp:account-payment/7.0 contas
 fi
 
 if [ -d regras ]
